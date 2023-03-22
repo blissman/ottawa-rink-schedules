@@ -117,7 +117,7 @@ let rinks = {
     },
     "Tom Brown Arena": {
         "href": "https://ottawa.ca/en/recreation-and-parks/recreation-facilities/facility-listing/tom-brown-arena",
-        "address": "141 Bayview Road Ottawa ON K1Y 4M3 Canada"
+        "address": "141 Bayview Station Road Ottawa ON K1Y 4M3 Canada"
     },
     "Vernon Recreation Centre": {
         "href": "https://ottawa.ca/en/recreation-and-parks/recreation-facilities/facility-listing/vernon-recreation-centre",
