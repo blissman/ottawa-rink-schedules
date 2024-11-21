@@ -147,7 +147,7 @@ async function fetchRinks() {
 };
 
 
-async function parsePages() {
+function parsePages() {
     for (rink in rinks) {
         const page = rinks[rink]['page'];
         const buttons = Array.from(page.getElementsByTagName("button"));
