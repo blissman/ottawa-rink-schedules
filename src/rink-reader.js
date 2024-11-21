@@ -95,12 +95,8 @@ let rinks = {
         "href": "https://ottawa.ca/en/recreation-and-parks/recreation-facilities/facility-listing/nepean-sportsplex",
         "address": "1701 Woodroffe Avenue Ottawa ON K2G 1W2 Canada"
     },
-    "Osgoode Community Centre - Stuart Homes Arena": {
-        "href": "https://ottawa.ca/en/recreation-and-parks/recreation-facilities/facility-listing/osgoode-community-centre-stuart-homes-arena",
-        "address": "5660 Osgoode Main Street Osgoode ON K0A 2W0 Canada"
-    },
     "Osgoode Community Centre and Stuart Holmes Arena": {
-        "href": "https://ottawa.ca/en/recreation-and-parks/recreation-facilities/facility-listing/osgoode-community-centre-and-stuart-holmes-arena",
+        "href": "https://ottawa.ca/en/recreation-and-parks/facilities/place-listing/osgoode-community-centre-and-stuart-holmes-arena",
         "address": "5660 Osgoode Main Street Ottawa ON K0A 2W0 Canada"
     },
     "Ray Friel Recreation Complex": {
@@ -141,14 +137,17 @@ const appendSchedules = (elements) => {
 
 const rinkKeys = Object.keys(rinks);
 
-rinkKeys.forEach((rink) => {
-    fetch(rinks[rink].href)
-        .then((response) => response.text())
-        .then((data) => parser.parseFromString(data, "text/html"))
-        .then((output) => rinks[rink]['page'] = output);
-})
+async function fetchRinks() {
+    await Promise.all(rinkKeys.map(async (rink) => {
+        await fetch(rinks[rink].href)
+            .then((response) => response.text())
+            .then((data) => parser.parseFromString(data, "text/html"))
+            .then((output) => rinks[rink]['page'] = output);
+    }));
+};
 
-const parsePages = () => {
+
+async function parsePages() {
     for (rink in rinks) {
         const page = rinks[rink]['page'];
         const buttons = Array.from(page.getElementsByTagName("button"));
@@ -184,10 +183,8 @@ const parsePages = () => {
                 }
             }
         });
+        appendSchedules(tables);
     }
 };
 
-window.setTimeout(() => {
-    parsePages();
-    appendSchedules(tables);
-}, 1500);
+fetchRinks().then(parsePages);
