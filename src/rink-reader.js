@@ -153,28 +153,13 @@ async function parsePages() {
         const buttons = Array.from(page.getElementsByTagName("button"));
         buttons.forEach((button) => {
             const expected = /(\bdrop-in\b.*\bskat.*\b)/i;
-            const chevrolet = /(\btubman\b.*\bchevrolet.*\b)/i;
-            const chevSched = /(\bdrop-in\b.*\bschedule.*\b)/i;
-            if (button.textContent.match(expected) && !rink.match(chevrolet)) {
+            if (button.textContent.match(expected)) {
                 try {
                     const parent = button.parentElement.parentElement.parentElement;
                     let table = parent.getElementsByTagName('table')[0].cloneNode(true);
                     let caption = table.getElementsByTagName('caption')[0];
-                    const captionRegex = /.+?(?=\-)/i;
-                    const captionText = caption.innerHTML;
-                    const anchorTag = `<a href=${rinks[rink]['href']}> ${rink}</a>: <a href="https://www.google.com/maps/place/${rinks[rink]['address']}"> ${rinks[rink]['address']}</a> `;
-                    caption.innerHTML = captionText.replace(captionRegex, anchorTag);
-                    tables.push(table);
-                } catch (error) {
-                    console.warn(`${rink} - ${error}`);
-                }
-            } else if (rink.match(chevrolet) && button.textContent.match(chevSched)) {
-                try {
-                    const parent = button.parentElement.parentElement.parentElement;
-                    let table = parent.getElementsByTagName('table')[0].cloneNode(true);
-                    let caption = table.getElementsByTagName('caption')[0];
-                    const captionRegex = /.+?(?=\-)/i;
-                    const captionText = caption.innerHTML;
+                    const captionRegex = /.+?(?=(\–|\-))/i;
+                    let captionText = String(caption.innerHTML);
                     const anchorTag = `<a href=${rinks[rink]['href']}> ${rink}</a>: <a href="https://www.google.com/maps/place/${rinks[rink]['address']}"> ${rinks[rink]['address']}</a> `;
                     caption.innerHTML = captionText.replace(captionRegex, anchorTag);
                     tables.push(table);
